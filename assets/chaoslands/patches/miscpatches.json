@@ -1,0 +1,90 @@
+[
+  {
+    "op": "add",
+    "path": "/enabled",
+    "value": false,
+    "file": "chaoslands:blocktypes/locusthorde.json",
+    "condition": { "when": "LOClocustHordeEnabled", "isValue": "false" }
+  },
+
+  {
+    "op": "add",
+    "path": "/structures/-",
+    "value": {
+      "code": "bossarenaclockmaker",
+      "group": "bossarena",
+      "minGroupDistance": 6000,
+      "name": "Boss Arena",
+      "chance": 1000,
+      "schematics": [
+        "bossarena/bossarena-clockmaker"
+      ],
+      "offsetY": -40,
+      "buildProtected": true,
+      "buildProtectionDesc": "Unknown Energy Field",
+      "buildProtectionName": "Corrupted Clockmaker",
+      "placement": "surface",
+      "postPass": true
+    },
+    "file": "game:worldgen/structures.json",
+    "condition": { "when": "LOCbossesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/enabled",
+    "value": "false",
+    "file": "chaoslands:entities/humanoid/npc-clockmaker-boss.json",
+    "condition": { "when": "LOCbossesEnabled", "isValue": "false" }
+  },
+  {
+    "op": "replace",
+    "path": "/enabledByType/*-fire",
+    "value": "false",
+    "file": "chaoslands:entities/land/locust-corrupt.json",
+    "condition": { "when": "LOCfireLocustEnabled", "isValue": "false" }
+  },
+  {
+    "op": "replace",
+    "path": "/enabledByType/*-toxic",
+    "value": "false",
+    "file": "chaoslands:entities/land/locust-corrupt.json",
+    "condition": { "when": "LOCtoxicLocustEnabled", "isValue": "false" }
+  },
+  {
+    "op": "replace",
+    "path": "/enabledByType/*-explosive",
+    "value": "false",
+    "file": "chaoslands:entities/land/locust-corrupt.json",
+    "condition": { "when": "LOCbombLocustEnabled", "isValue": "false" }
+  },
+
+  {
+    "op": "add",
+    "path": "/class",
+    "value": "BlockDeepSeaweed",
+    "file": "game:blocktypes/plant/seaweed.json",
+    "condition": { "when": "LOCseasEnabled", "isValue": "true" }
+  },
+
+  {
+    "op": "add",
+    "path": "/class",
+    "value": "BlockShallowWaterLily",
+    "file": "game:blocktypes/plant/waterlily.json",
+    "condition": { "when": "LOCseasEnabled", "isValue": "true" }
+  },
+
+  {
+    "op": "add",
+    "path": "/structures/-",
+    "value": {
+			"code": "shipwreck",
+			"chance": 0.05,
+			"schematics": ["underwater/*"],
+			"placement": "underwater",
+			"replacewithblocklayers": ["soil-low-normal", "soil-low-none"],
+			"offsetY": -1
+		},
+    "file": "game:worldgen/structures.json",
+  },
+]

@@ -1,0 +1,646 @@
+[
+  {
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [
+      {
+        "name": "BurningProduces"
+      }
+    ],
+    "file": "game:blocktypes/clay/bloomerybase.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/clay/flowerpot.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/clay/planter.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [
+      {
+        "name": "BurningProduces"
+      }
+    ],
+    "file": "game:blocktypes/coalpile.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviorsByType/*",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/bamboo.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviorsByType/*",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/bambooleaves.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/barrelcactus.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/bigberrybush.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/smallberrybush.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/cabbage.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/carrot.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/carrot.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/flax.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/onion.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/parsnip.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/rice.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/rye.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/soybean.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/spelt.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/turnip.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/crop/carrot.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/croton.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/ferntree.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value":
+      {
+        "name": "PlantAbsorb"
+      },
+    "file": "game:blocktypes/plant/flower.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value":
+      {
+        "name": "PlantAbsorb"
+      },
+    "file": "game:blocktypes/plant/flower-lupine.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/herb.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/herb.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviorsByType/*",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/leavesbranchy.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/attributes/entityBehaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/plaintreesapling.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/pumpkin/motherplant.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/pumpkin/vine.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "PlantAbsorb"
+    },
+    "file": "game:blocktypes/plant/rafflesia.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [{
+      "name": "PlantAbsorb"
+    }],
+    "file": "game:blocktypes/plant/reedpapyrus-free.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [{
+      "name": "PlantAbsorb"
+    }],
+    "file": "game:blocktypes/plant/reedpapyrus-water.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [{
+      "name": "PlantAbsorb"
+    }],
+    "file": "game:blocktypes/plant/reedpapyrus-ice.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviorsByType/*",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/saguarocactus.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/tallfern.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviorsByType/*",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/tallgrass.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/waterlily.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "PlantAbsorb"
+      }
+    ],
+    "file": "game:blocktypes/plant/wildvine.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviorsByType",
+    "value": {
+      "*-sparse": [
+        {
+          "name": "PlantAbsorb"
+        }
+      ],
+      "*-normal": [
+        {
+          "name": "PlantAbsorb"
+        }
+      ]
+    },
+    "file": "game:blocktypes/soil/cob.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviorsByType",
+    "value": {
+      "*-sparse": [
+        {
+          "name": "PlantAbsorb"
+        }
+      ],
+      "*-normal": [
+        {
+          "name": "PlantAbsorb"
+        }
+      ]
+    },
+    "file": "game:blocktypes/soil/soil.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [
+      {
+        "name": "BurningProduces"
+      }
+    ],
+    "file": "game:blocktypes/stone/generic/forge.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [
+      {
+        "name": "BurningProduces"
+      }
+    ],
+    "file": "game:blocktypes/wood/generic/torch.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/entityBehaviorsByType/*/-",
+    "value":
+      {
+        "name": "BurningProduces"
+      },
+    "file": "game:blocktypes/wood/generic/firepit.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "SparkGas"
+    },
+    "file": "game:blocktypes/stone/ore-gem.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "SparkGas"
+    },
+    "file": "game:blocktypes/stone/ore-graded.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "SparkGas"
+    },
+    "file": "game:blocktypes/stone/ore-ungraded.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "SparkGas"
+    },
+    "file": "game:blocktypes/stone/rock.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "CaveIn",
+        "properties": {
+          "breakInstead": true
+        }
+      },
+      {"name": "SparkGas"}
+    ],
+    "file": "game:blocktypes/stone/stalagsection.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "MineGas",
+      "properties": {
+        "afterBlocksByType": {
+          "*-bismuthinite-*": [
+            "chaoslands:gas-so2-2"
+          ],
+          "*-sphalerite-*": [
+            "chaoslands:gas-so2-2"
+          ],
+          "*-galena-*": [
+            "chaoslands:gas-so2-2"
+          ],
+          "*-pentlandite-*": [
+            "chaoslands:gas-so2-2"
+          ]
+        }
+      }
+    },
+    "file": "game:blocktypes/stone/ore-graded.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "ExplosionGas",
+      "properties": {
+        "afterBlocksByType": {
+          "*-bismuthinite-*": [
+            "chaoslands:gas-h2s-2",
+            "chaoslands:gas-h2-1"
+          ],
+          "*-sphalerite-*": [
+            "chaoslands:gas-h2s-2",
+            "chaoslands:gas-h2-1"
+          ],
+          "*-galena-*": [
+            "chaoslands:gas-h2s-2",
+            "chaoslands:gas-h2-1"
+          ],
+          "*-pentlandite-*": [
+            "chaoslands:gas-h2s-2",
+            "chaoslands:gas-h2-1"
+          ]
+        }
+      }
+    },
+    "file": "game:blocktypes/stone/ore-graded.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "MineGas",
+      "properties": {
+        "afterBlocksByType": {
+          "*-lignite-*": [
+            "chaoslands:gas-ch4-2",
+            "chaoslands:gas-coaldust-4"
+          ],
+          "*-bituminouscoal-*": [
+            "chaoslands:gas-ch4-3",
+            "chaoslands:gas-coaldust-5"
+          ],
+          "*-anthracite-*": [
+            "chaoslands:gas-ch4-3",
+            "chaoslands:gas-coaldust-5"
+          ],
+          "*-sulfur-*": [
+            "chaoslands:gas-so2-5"
+          ]
+        }
+      }
+    },
+    "file": "game:blocktypes/stone/ore-ungraded.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "ExplosionGas",
+      "properties": {
+        "afterBlocksByType": {
+          "*-lignite-*": [
+            "chaoslands:gas-co2-2",
+            "chaoslands:gas-coaldust-4",
+            "chaoslands:gas-co-2"
+          ],
+          "*-bituminouscoal-*": [
+            "chaoslands:gas-co2-2",
+            "chaoslands:gas-coaldust-4",
+            "chaoslands:gas-co-2"
+          ],
+          "*-anthracite-*": [
+            "chaoslands:gas-co2-2",
+            "chaoslands:gas-coaldust-4",
+            "chaoslands:gas-co-2"
+          ],
+          "*-sulfur-*": [
+            "chaoslands:gas-h2s-4"
+          ]
+        }
+      }
+    },
+    "file": "game:blocktypes/stone/ore-ungraded.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+  
+  {
+    "op": "replace",
+    "path": "/attributes/transientProps/convertTo",
+    "value": "chaoslands:gas-h2s-2",
+    "file": "game:blocktypes/bone/carcass.json",
+    "condition": { "when": "LOCgasesEnabled", "isValue": "true" }
+  },
+]

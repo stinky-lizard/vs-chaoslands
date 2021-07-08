@@ -1,0 +1,21 @@
+[
+  {
+    "op": "replace",
+    "path": "/variants/9",
+    "value": {
+			"code":  "ocean",
+			"comment": "Lots of water",
+			"hexcolor": "#0000FF",
+			"weight": 1000,
+      "minTemp": -50,
+			"maxTemp": 50,
+			"useClimateMap": false,
+			"terrainOctaves":          [0, 0, 0, 0, 1, 0.1, 0.25, 0.3, 0],
+			"terrainOctaveThresholds": [0, 0, 0, 0, 0,   0,    0,   0,   0],
+			"terrainYKeyPositions":    [0, 0.25,  0.35, 0.41],
+			"terrainYKeyThresholds":   [1,    1,  0.2,  0]
+		},
+      "file": "game:worldgen/landforms.json",
+      "condition": { "when": "LOCseasEnabled", "isValue": "true" }
+    },
+]

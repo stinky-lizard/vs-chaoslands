@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "modid": "chaoslands",
+  "name": "Lands of Chaos",
+  "author": "jakecool19",
+  "description": "Adds large oceans, caves and creatures to the world.",
+  "version": "1.0.0",
+  "dependency": {
+    "game": ""
+  }
+}

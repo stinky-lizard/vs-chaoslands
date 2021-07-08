@@ -1,0 +1,50 @@
+[
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "CaveIn",
+      "properties": {
+        "fallSound": "effect/rockslide"
+      }
+    },
+    "file": "game:blocktypes/stone/ore-gem.json",
+    "condition": { "when": "LOCcaveinsEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "CaveIn",
+      "properties": {
+        "fallSound": "effect/rockslide"
+      }
+    },
+    "file": "game:blocktypes/stone/ore-graded.json",
+    "condition": { "when": "LOCcaveinsEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "CaveIn",
+      "properties": {
+        "fallSound": "effect/rockslide"
+      }
+    },
+    "file": "game:blocktypes/stone/ore-ungraded.json",
+    "condition": { "when": "LOCcaveinsEnabled", "isValue": "true" }
+  },
+  {
+    "op": "add",
+    "path": "/behaviors/-",
+    "value": {
+      "name": "CaveIn",
+      "properties": {
+        "fallSound": "effect/rockslide"
+      }
+    },
+    "file": "game:blocktypes/stone/rock.json",
+    "condition": { "when": "LOCcaveinsEnabled", "isValue": "true" }
+  }
+]

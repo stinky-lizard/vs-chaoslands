@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F6401E54-B5EB-4FC9-9C72-688E160A3836}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>chaoslands</RootNamespace>
+    <AssemblyName>chaoslands</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(ProjectDir)\bin</OutputPath>
+    <IntermediateOutputPath>..\..\obj\Debug\chaoslands\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(ProjectDir)\bin</OutputPath>
+    <IntermediateOutputPath>..\..\obj\Release\chaoslands\</IntermediateOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\jakec\AppData\Roaming\Vintagestory\Lib\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\jakec\AppData\Roaming\Vintagestory\Lib\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="VintagestoryAPI">
+      <HintPath>$(AppData)\Vintagestory\VintagestoryAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSSurvivalMod">
+      <HintPath>$(AppData)\Vintagestory\Mods\VSSurvivalMod.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSEssentials">
+      <HintPath>$(AppData)\Vintagestory\Mods\VSEssentials.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSCreativeMod">
+      <HintPath>$(AppData)\Vintagestory\Mods\VSCreativeMod.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(AppData)\Vintagestory\Lib\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="modinfo.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\AI\AiTaskCrabWander.cs" />
+    <Compile Include="src\AI\AiTaskFireMeleeAttack.cs" />
+    <Compile Include="src\AI\AiTaskNPCMeleeAttack.cs" />
+    <Compile Include="src\AI\AiTaskSelfDestruct.cs" />
+    <Compile Include="src\AI\AiTaskShield.cs" />
+    <Compile Include="src\AI\AiTaskVenomMeleeAttack.cs" />
+    <Compile Include="src\Block Behavior\BlockBehaviorCaveIn.cs" />
+    <Compile Include="src\Block Behavior\BlockBehaviorExplosionGas.cs" />
+    <Compile Include="src\Block Behavior\BlockBehaviorMineGas.cs" />
+    <Compile Include="src\Block Behavior\BlockBehaviorPlantAbsorb.cs" />
+    <Compile Include="src\Block Behavior\BlockBehaviorSparkGas.cs" />
+    <Compile Include="src\Block Entity Behavior\BlockEntityBehaviorBurningProduces.cs" />
+    <Compile Include="src\Block Entity Behavior\BlockEntityBehaviorPlantAbsorb.cs" />
+    <Compile Include="src\Block Entity\BlockEntitySupportBeam.cs" />
+    <Compile Include="src\Block\BlockDeepSeaweed.cs" />
+    <Compile Include="src\Block\BlockSeagrass.cs" />
+    <Compile Include="src\Block\BlockShallowWaterLily.cs" />
+    <Compile Include="src\Block\BlockGas.cs" />
+    <Compile Include="src\Block\BlockHeavyGas.cs" />
+    <Compile Include="src\Block\BlockLightGas.cs" />
+    <Compile Include="src\Block\BlockLocustHorde.cs" />
+    <Compile Include="src\Block\BlockSupportBeam.cs" />
+    <Compile Include="src\BuffStuff.cs" />
+    <Compile Include="src\Core.cs" />
+    <Compile Include="src\Effects\ToxicGasEffect.cs" />
+    <Compile Include="src\Entity Behavior\EntityBehaviorAir.cs" />
+    <Compile Include="src\Entity Behavior\EntityBehaviorBossTalk.cs" />
+    <Compile Include="src\Entity Behavior\EntityBehaviorBossWaterRemoval.cs" />
+    <Compile Include="src\Entity Behavior\EntityBehaviorGear.cs" />
+    <Compile Include="src\Entity Behavior\EntityBehaviorLocustProps.cs" />
+    <Compile Include="src\Entity\EntityNPC.cs" />
+    <Compile Include="src\WorldGen\GenCaveTerra.cs" />
+    <Compile Include="src\GUI\HudElementAirBar.cs" />
+    <Compile Include="src\Inventory\InventoryNPCGear.cs" />
+    <Compile Include="src\WorldGen\NoiseCaveforms.cs" />
+    <Compile Include="src\Patches.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="assets\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+copy "$(TargetPath)" "$(ProjectDir)" 
+copy "$(TargetDir)\$(TargetName).pdb" "$(ProjectDir)" 
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

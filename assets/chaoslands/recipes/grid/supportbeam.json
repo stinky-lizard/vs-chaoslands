@@ -1,0 +1,11 @@
+[
+{
+	ingredientPattern: "T,L,L",
+	ingredients: {
+		"T": { type: "item", code: "game:axe-*", isTool: true },
+		"L": { type: "block", code: "game:log-*"}
+	},
+	width: 1,
+	height: 3,
+	output: { type: "block", code: "chaoslands:supportbeam-pine-empty", quantity: 16 }
+}]

@@ -1,0 +1,85 @@
+{
+	code: "supportbeam",
+	class: "BlockSupportBeam",
+  entityclassByType:
+  {
+    "*-ns": "SupportBeam",
+    "*-ew": "SupportBeam"
+  },
+	attributes: {
+		handbook: {
+			groupBy: ["supportbeam-*"]
+		}
+	},
+	variantgroups: [
+		{ code: "wood", states: ["pine", "aged"] },
+		{ code: "type", states: ["empty", "n", "e", "s", "w", "ne", "ns", "nw", "es", "ew", "sw", "nes", "new", "nsw", "esw", "nesw"] }
+	],
+	creativeinventory: { "general": ["supportbeam-*-empty"] },
+	shapebytype: {
+		"*-empty": { base: "chaoslands:block/supportbeam/empty" },
+		"*-n": { base: "chaoslands:block/supportbeam/w", rotateY: 270 },
+		"*-e": { base: "chaoslands:block/supportbeam/w", rotateY: 180 },
+		"*-s": { base: "chaoslands:block/supportbeam/w", rotateY: 90 },
+		"*-w": { base: "chaoslands:block/supportbeam/w", rotateY: 0 },
+
+		"*-ns": { base: "chaoslands:block/supportbeam/ew", rotateY: 90 },
+		"*-ew": { base: "chaoslands:block/supportbeam/ew", rotateY: 0 },
+
+		"*-ne": { base: "chaoslands:block/supportbeam/sw", rotateY: 180 },
+		"*-nw": { base: "chaoslands:block/supportbeam/sw", rotateY: 270 },
+		"*-es": { base: "chaoslands:block/supportbeam/sw", rotateY: 90 },
+		"*-sw": { base: "chaoslands:block/supportbeam/sw", rotateY: 0 },
+
+		"*-nes": { base: "chaoslands:block/supportbeam/nsw", rotateY: 180 },
+		"*-new": { base: "chaoslands:block/supportbeam/nsw", rotateY: 270 },
+		"*-nsw": { base: "chaoslands:block/supportbeam/nsw", rotateY: 0 },
+		"*-esw": { base: "chaoslands:block/supportbeam/nsw", rotateY: 90 },
+
+		"*-nesw": { base: "chaoslands:block/supportbeam/nesw", rotateY: 0 }
+	},
+	drawtype: "JSON",
+	blockmaterial: "Wood",
+	textures: {
+		"wood": { base: "game:block/wood/debarked/{wood}" }
+	},
+	sidesolid: {
+		all: false
+	},
+	sideopaque: {
+		all: false
+	},
+	resistance: 3,
+	lightAbsorption: 0,
+	sounds: {
+		"place": "game:block/planks",
+		"hit": "game:block/planks",
+		"break": "game:block/planks",
+		"walk": "game:walk/wood"
+	},
+	combustibleProps: {
+		burnTemperature: 600,
+		burnDuration: 10,
+	},
+	materialDensity: 600,
+  collisionSelectionBoxesByType: {
+    "*-empty": [{ x1: 0.3125, y1: 0, z1: 0.3125, x2: 0.6875, y2: 1, z2: 0.6875} ],
+		"*-n": [{ x1: 0, y1: 0, z1: 0.3125, x2: 0.6875, y2: 1, z2: 0.6875 , rotateY: 270 }],
+		"*-e": [{ x1: 0, y1: 0, z1: 0.3125, x2: 0.6875, y2: 1, z2: 0.6875 , rotateY: 180 }],
+		"*-s": [{ x1: 0, y1: 0, z1: 0.3125, x2: 0.6875, y2: 1, z2: 0.6875 , rotateY: 90 }],
+		"*-w": [{ x1: 0, y1: 0, z1: 0.3125, x2: 0.6875, y2: 1, z2: 0.6875 , rotateY: 0 }],
+
+		"*-ns": [{ x1: 0, y1: 0.6875, z1: 0.3125, x2: 1, y2: 1, z2: 0.6875, rotateY: 90 }],
+		"*-ew": [{ x1: 0, y1: 0.6875, z1: 0.3125, x2: 1, y2: 1, z2: 0.6875, rotateY: 0 }],
+
+		"*-ne": [{ x1: 0, y1: 0, z1: 0.3125, x2: 0.6875, y2: 1, z2: 1 , rotateY: 180 }],
+		"*-nw": [{ x1: 0, y1: 0, z1: 0.3125, x2: 0.6875, y2: 1, z2: 1 , rotateY: 270 }],
+		"*-es": [{ x1: 0, y1: 0, z1: 0.3125, x2: 0.6875, y2: 1, z2: 1 , rotateY: 90 }],
+		"*-sw": [{ x1: 0, y1: 0, z1: 0.3125, x2: 0.6875, y2: 1, z2: 1 , rotateY: 0 }],
+
+		"*-nes": [{ x1: 0, y1: 0, z1: 0, x2: 0.6875, y2: 1, z2: 1, rotateY: 180 }],
+		"*-new": [{ x1: 0, y1: 0, z1: 0, x2: 0.6875, y2: 1, z2: 1, rotateY: 270 }],
+		"*-nsw": [{ x1: 0, y1: 0, z1: 0, x2: 0.6875, y2: 1, z2: 1, rotateY: 0 }],
+		"*-esw": [{ x1: 0, y1: 0, z1: 0, x2: 0.6875, y2: 1, z2: 1, rotateY: 90 }],
+  },
+}
