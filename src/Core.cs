@@ -8,6 +8,8 @@ using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 using BuffStuff;
 using HarmonyLib;
+using Vintagestory.API.MathTools;
+using System.Collections.Generic;
 
 namespace ChaosLands
 {
@@ -45,6 +47,7 @@ namespace ChaosLands
             api.World.Config.SetBool("LOCseagrassEnabled", LandsOfChaosConfig.Loaded.SeagrassEnabled);
             api.World.Config.SetBool("LOCkelpEnabled", LandsOfChaosConfig.Loaded.KelpEnabled);
             api.World.Config.SetBool("LOCseasEnabled", LandsOfChaosConfig.Loaded.SeasEnabled);
+            api.World.Config.SetBool("LOChaliteEnabled", LandsOfChaosConfig.Loaded.HaliteFormationsEnabled);
         }
 
         public override void Start(ICoreAPI api)
@@ -59,6 +62,7 @@ namespace ChaosLands
             api.RegisterBlockClass("BlockDeepSeaweed", typeof(BlockDeepSeaweed));
             api.RegisterBlockClass("BlockSeagrass", typeof(BlockSeagrass));
             api.RegisterBlockClass("BlockShallowWaterLily", typeof(BlockShallowWaterLily));
+            api.RegisterBlockClass("BlockLightPlant", typeof(BlockLightPlant));
 
             api.RegisterBlockBehaviorClass("CaveIn", typeof(BlockBehaviorCaveIn));
             api.RegisterBlockBehaviorClass("PlantAbsorb", typeof(BlockBehaviorPlantAbsorb));
@@ -135,6 +139,9 @@ namespace ChaosLands
 
         public float DefaultCavesShaftHeight { get; set; } = 1f;
 
+        //Ocean settings
+        public float OceanWeightMult { get; set; } = 0f;
+
         //Custom Trees
         public float TreeSizeMult { get; set; } = 1;
 
@@ -152,6 +159,8 @@ namespace ChaosLands
         public int CaveInDepthOffset { get; set; } = 3;
 
         public float CaveInSupportBeamRadius { get; set; } = 5f;
+
+        public float CaveInChainChance { get; set; } = 0.75f;
 
         public float CaveInDamage { get; set; } = 3f;
 
@@ -202,6 +211,93 @@ namespace ChaosLands
         public bool SeagrassEnabled { get; set; } = true;
 
         public bool KelpEnabled { get; set; } = true;
+
+        public bool HaliteFormationsEnabled { get; set; } = false;
+
+        public bool RivuletsEnabled { get; set; } = true;
         #endregion
+    }
+
+    public class BlockLightPlant : Block
+    {
+        public override bool TryPlaceBlockForWorldGen(IBlockAccessor blockAccessor, BlockPos pos, BlockFacing onBlockFace, LCGRandom worldgenRandom)
+        {
+            bool result = base.TryPlaceBlockForWorldGen(blockAccessor, pos, onBlockFace, worldgenRandom);
+
+            if (result) FloodFillDecorAt(pos.X, pos.Y, pos.Z, blockAccessor, worldgenRandom);
+
+            return result;
+        }
+
+        public void FloodFillDecorAt(int posX, int posY, int posZ, IBlockAccessor accessor, LCGRandom rand)
+        {
+            Queue<Vec4i> bfsQueue = new Queue<Vec4i>();
+            HashSet<BlockPos> fillablePositions = new HashSet<BlockPos>();
+
+            bfsQueue.Enqueue(new Vec4i(posX, posY, posZ, 0));
+            fillablePositions.Add(new BlockPos(posX, posY, posZ));
+
+            float radius = 10;
+
+            BlockFacing[] faces = BlockFacing.ALLFACES;
+            BlockPos curPos = new BlockPos();
+            List<BlockPos> modifyPos = new List<BlockPos>();
+            List<IWorldChunk> chunksMarked = new List<IWorldChunk>();
+            string[] plants = { "lichen", "moss", "barnacle" };
+            bool one = false;
+
+
+
+
+            while (bfsQueue.Count > 0)
+            {
+                Vec4i bpos = bfsQueue.Dequeue();
+
+                foreach (BlockFacing facing in faces)
+                {
+                    curPos.Set(bpos.X + facing.Normali.X, bpos.Y + facing.Normali.Y, bpos.Z + facing.Normali.Z);
+
+                    Block block = accessor.GetBlock(curPos);
+                    bool inBounds = bpos.W < radius;
+
+                    if (inBounds)
+                    {
+                        if (block.BlockId == 0 && !fillablePositions.Contains(curPos))
+                        {
+                            bfsQueue.Enqueue(new Vec4i(curPos.X, curPos.Y, curPos.Z, bpos.W + 1));
+                            fillablePositions.Add(curPos.Copy());
+                        }
+                        else if (block.SideSolid[facing.Opposite.Index])
+                        {
+                            Block attach = accessor.GetBlock(new AssetLocation("game:attachingplant-" + plants[rand.NextInt(plants.Length)]));
+                            IWorldChunk dirty = accessor.GetChunkAtBlockPos(curPos);
+                            if (dirty != null)
+                            {
+                                dirty.AddDecor(accessor, attach, curPos, facing.Opposite);
+                                if (!chunksMarked.Contains(dirty))
+                                {
+                                    chunksMarked.Add(dirty);
+                                    modifyPos.Add(curPos.Copy());
+                                }
+
+                                if (!one)
+                                {
+                                    System.Diagnostics.Debug.WriteLine(curPos);
+                                    one = true;
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+
+            }
+
+            foreach (BlockPos dirty in modifyPos)
+            {
+                accessor.MarkChunkDecorsModified(dirty);
+            }
+        }
     }
 }

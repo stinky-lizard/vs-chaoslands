@@ -4,7 +4,7 @@
   "name": "Lands of Chaos",
   "author": "jakecool19",
   "description": "Adds large oceans, caves and creatures to the world.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependency": {
     "game": ""
   }

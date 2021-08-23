@@ -39,7 +39,7 @@
 			"offsetX": { "avg": 0, "var": 12 },
 			"offsetZ": { "avg": 0, "var": 12 },
 			"chance": 1,
-			"minWaterDepth": 1,
+			"minWaterDepth": 3,
 			"placement": "UnderWater"
 		},
     "file": "game:worldgen/blockpatches.json",
@@ -82,5 +82,5 @@
 		},
     "file": "game:worldgen/blockpatches.json",
     "condition": { "when": "LOCkelpEnabled", "isValue": "true" }
-  },
+  }
 ]

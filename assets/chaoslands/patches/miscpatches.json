@@ -87,4 +87,12 @@
 		},
     "file": "game:worldgen/structures.json",
   },
+
+  {
+    "op": "replace",
+    "path": "/0/attributes/ignoreParentTestPerBlock",
+    "value": false,
+    "file": "game:worldgen/deposits/mineralore/halite.json",
+    "condition": { "when": "LOChaliteEnabled", "isValue": "false" }
+  }
 ]

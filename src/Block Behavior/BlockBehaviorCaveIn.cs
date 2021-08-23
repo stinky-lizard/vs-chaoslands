@@ -11,7 +11,9 @@ namespace ChaosLands
     public class BlockBehaviorCaveIn : BlockBehavior
     {
         bool breakInstead;
+        bool transformInstead;
         AssetLocation[] exceptions;
+        AssetLocation transformInto;
         
 
         AssetLocation fallSound;
@@ -27,6 +29,8 @@ namespace ChaosLands
             base.Initialize(properties);
 
             breakInstead = properties["breakInstead"].AsBool(false);
+            transformInstead = properties["transformInstead"].AsBool(false);
+            transformInto = new AssetLocation(properties["transformInto"].AsString("game:air"));
             exceptions = properties["exceptions"].AsObject(new AssetLocation[0], block.Code.Domain);
 
             attachmentArea = properties["attachmentArea"].AsObject<Cuboidi>(null);
@@ -43,11 +47,11 @@ namespace ChaosLands
         {
             base.OnBlockBroken(world, pos, byPlayer, ref handling);
 
-            if (byPlayer == null || byPlayer.WorldData.CurrentGameMode != EnumGameMode.Survival) return;
+            if (byPlayer == null || !LandsOfChaosConfig.Loaded.CaveInsEnabled || byPlayer.WorldData.CurrentGameMode == EnumGameMode.Creative) return;
             if (world.Rand.NextDouble() > LandsOfChaosConfig.Loaded.CaveInChance) return;
             if (world.Api.ModLoader.GetModSystem<POIRegistry>()?.GetNearestPoi(pos.ToVec3d(), LandsOfChaosConfig.Loaded.CaveInSupportBeamRadius * 2, (block) => { if (block.Type == "supportbeam" && CheckForSupport(pos, block.Position)) return true; return false; }) != null) return;
 
-                BlockPos tmpPos = pos.Copy();
+            BlockPos tmpPos = pos.Copy();
             world.BlockAccessor.SetBlock(0, pos);
 
             for (int x = -LandsOfChaosConfig.Loaded.CaveInRadius; x <= LandsOfChaosConfig.Loaded.CaveInRadius; x++)
@@ -62,7 +66,7 @@ namespace ChaosLands
 
                         EnumHandling bla = EnumHandling.PassThrough;
                         string bla2 = "";
-                        world.BlockAccessor.GetBlock(tmpPos).GetBehavior<BlockBehaviorCaveIn>()?.TryFalling(world, tmpPos, ref bla, ref bla2, world.Rand.Next(LandsOfChaosConfig.Loaded.CaveInDepth - LandsOfChaosConfig.Loaded.CaveInDepthOffset, LandsOfChaosConfig.Loaded.CaveInDepth + LandsOfChaosConfig.Loaded.CaveInDepthOffset + 1));
+                        if (world.Rand.NextDouble() <= LandsOfChaosConfig.Loaded.CaveInChainChance) world.BlockAccessor.GetBlock(tmpPos).GetBehavior<BlockBehaviorCaveIn>()?.TryFalling(world, tmpPos, ref bla, ref bla2, world.Rand.Next(LandsOfChaosConfig.Loaded.CaveInDepth - LandsOfChaosConfig.Loaded.CaveInDepthOffset, LandsOfChaosConfig.Loaded.CaveInDepth + LandsOfChaosConfig.Loaded.CaveInDepthOffset + 1));
                     }
                 }
             }
@@ -94,6 +98,18 @@ namespace ChaosLands
                 world.BlockAccessor.BreakBlock(pos, null);
                 handling = EnumHandling.PreventSubsequent;
                 return true;
+            }
+
+            if (transformInstead)
+            {
+                Block transformation = world.GetBlock(transformInto);
+
+                if (transformation != null)
+                {
+                    world.BlockAccessor.SetBlock(transformation.BlockId, pos);
+                    handling = EnumHandling.PreventSubsequent;
+                    return true;
+                }
             }
 
             if (IsReplacableBeneath(world, pos) || (LandsOfChaosConfig.Loaded.CaveInSideways && world.Rand.NextDouble() < LandsOfChaosConfig.Loaded.CaveInSidewaysChance && IsReplacableBeneathAndSideways(world, pos)))

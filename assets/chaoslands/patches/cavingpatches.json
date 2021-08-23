@@ -41,7 +41,9 @@
     "value": {
       "name": "CaveIn",
       "properties": {
-        "fallSound": "effect/rockslide"
+        "fallSound": "effect/rockslide",
+        "transformInstead" : true,
+        "transformInto" : "chaoslands:brokenrock-{rock}"
       }
     },
     "file": "game:blocktypes/stone/rock.json",

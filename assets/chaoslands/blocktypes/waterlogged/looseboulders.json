@@ -1,0 +1,92 @@
+{
+	code: "looseboulders",
+	class: "BlockRequireSolidGround",
+	attributes: {
+		handbook: {
+			groupBy: ["looseboulders-*"],
+			include: true
+		}
+	},
+  enabledByType: {
+    "*-halite-water" : true,
+    "*" : false
+  },
+	behaviors: [{name: "Unstable"}],
+	variantgroups: [
+		{ code:"rock", loadFromProperties: "block/rockwithdeposit" },
+		{ code: "cover", states: ["water"] }
+	],
+	replaceable: 6500,
+	creativeinventory: { "general": [""] },
+	shape: {
+		base: "game:block/stone/looseboulders/free1",
+		alternates: [
+			{ base: "game:block/stone/looseboulders/free1", rotateY: 90 },
+			{ base: "game:block/stone/looseboulders/free1", rotateY: 180 },
+			{ base: "game:block/stone/looseboulders/free1", rotateY: 270 },
+
+			{ base: "game:block/stone/looseboulders/free2", rotateY: 0 },
+			{ base: "game:block/stone/looseboulders/free2", rotateY: 90 },
+			{ base: "game:block/stone/looseboulders/free2", rotateY: 180 },
+			{ base: "game:block/stone/looseboulders/free2", rotateY: 270 },
+
+			{ base: "game:block/stone/looseboulders/free3", rotateY: 0 },
+			{ base: "game:block/stone/looseboulders/free3", rotateY: 90 },
+			{ base: "game:block/stone/looseboulders/free3", rotateY: 180 },
+			{ base: "game:block/stone/looseboulders/free3", rotateY: 270 },
+		]
+	},
+	lod2shape: {
+		base: "game:block/stone/looseboulders/lod2free1",
+		alternates: [
+			{ base: "game:block/stone/looseboulders/lod2free1", rotateY: 90 },
+			{ base: "game:block/stone/looseboulders/lod2free1", rotateY: 180 },
+			{ base: "game:block/stone/looseboulders/lod2free1", rotateY: 270 },
+
+			{ base: "game:block/stone/looseboulders/lod2free2", rotateY: 0 },
+			{ base: "game:block/stone/looseboulders/lod2free2", rotateY: 90 },
+			{ base: "game:block/stone/looseboulders/lod2free2", rotateY: 180 },
+			{ base: "game:block/stone/looseboulders/lod2free2", rotateY: 270 },
+
+			{ base: "game:block/stone/looseboulders/lod2free3", rotateY: 0 },
+			{ base: "game:block/stone/looseboulders/lod2free3", rotateY: 90 },
+			{ base: "game:block/stone/looseboulders/lod2free3", rotateY: 180 },
+			{ base: "game:block/stone/looseboulders/lod2free3", rotateY: 270 },
+		]
+	},
+	resistance: 0.15,
+	textures: {
+		rock: {base: "game:block/stone/rock/{rock}1" },
+    north: { base: "game:block/liquid/water" },
+		east: { base: "game:block/liquid/water" },
+		south: { base: "game:block/liquid/water" },
+		west: { base: "game:block/liquid/water" },
+		up: { base: "game:block/liquid/water" },
+		down: { base: "game:block/liquid/water" },
+		specialSecondTexture: { base: "game:block/liquid/water2" }
+	},
+  drawtype: "JSONAndWater",
+	renderpass: "liquid",
+	matterstate: "liquid",
+	blockmaterial: "liquid",
+	faceCullMode: "liquid",
+	liquidCode: "water",
+  liquidLevel: 7,
+	drops: [
+		{
+			type: "item",
+			code: "game:stone-{rock}",
+			quantity: { avg: 5, var: 3 }
+		}
+	],
+  sidesolid: { all: false },
+	sideopaque: { all: false },
+	lightAbsorption: 2,
+	selectionbox: { x1: 0, y1: 0, z1: 0, x2: 1, y2: 0.125, z2: 1 },
+	collisionbox: { x1: 0.1, y1: 0, z1: 0.1, x2: 0.9, y2: 0.3, z2: 0.9 },
+	guiTransform: {
+		translation: { x: 0, y: -8, z: 0 },
+		rotation: { x: -22.59375, y: 82, z: 0 },
+		scale: 1.64
+	}
+}

@@ -1,21 +1,79 @@
 [
   {
-    "op": "replace",
-    "path": "/variants/9",
-    "value": {
-			"code":  "ocean",
-			"comment": "Lots of water",
+		"op": "add",
+		"path": "/variants/-",
+		"value": {
+			"code": "ocean-deep",
+			"comment": "Lots of water, abyssal plain",
 			"hexcolor": "#0000FF",
-			"weight": 1000,
-      "minTemp": -50,
+			"weight": 75,
+			"minTemp": -50,
 			"maxTemp": 50,
 			"useClimateMap": false,
-			"terrainOctaves":          [0, 0, 0, 0, 1, 0.1, 0.25, 0.3, 0],
-			"terrainOctaveThresholds": [0, 0, 0, 0, 0,   0,    0,   0,   0],
-			"terrainYKeyPositions":    [0, 0.25,  0.35, 0.41],
-			"terrainYKeyThresholds":   [1,    1,  0.2,  0]
+			"terrainOctaves": [ 0, 0, 0, 0, 1, 0.1, 0.25, 0.3, 0 ],
+			"terrainOctaveThresholds": [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			"terrainYKeyPositions": [ 0, 0.20, 0.30, 0.32, 0.35, 0.38, 0.42, 0.43 ],
+			"terrainYKeyThresholds": [ 1, 1, 0.3, 0.24, 0.22, 0.2, 0.1, 0 ],
+			"mutations": [
+				{
+					"chance": 0.15,
+					"code": "abyssal hill",
+					"hexcolor": "#0000FF",
+					"terrainOctaves": [ 0, 0, 0, 1, 1, 1, 1, 0.6, 0.15 ],
+					"terrainOctaveThresholds": [ 0, 0, 0, 0.5, 0, 0, 0, 0, 0 ],
+					"terrainYKeyPositions": [ 0, 0.20, 0.30, 0.32, 0.35, 0.42, 0.43 ],
+					"terrainYKeyThresholds": [ 1, 1, 0.6, 0.5, 0.3, 0.2, 0.0 ]
+				},
+				{
+					"chance": 0.08,
+					"code": "ocean trench",
+					"hexcolor": "#0000FF",
+					"terrainOctaves": [ 0, 0, 0, 0, 0, 1, 1, 0, 1 ],
+					"terrainOctaveThresholds": [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+					"terrainYKeyPositions": [ 0, 0.1, 0.20, 0.30, 0.32, 0.35, 0.42, 0.43 ],
+					"terrainYKeyThresholds": [ 1, 0.85, 0.75, 0.5, 0.32, 0.2, 0.15, 0.0 ]
+				}
+
+			]
 		},
-      "file": "game:worldgen/landforms.json",
-      "condition": { "when": "LOCseasEnabled", "isValue": "true" }
-    },
+		"file": "game:worldgen/landforms.json",
+		"condition": {
+			"when": "LOCseasEnabled",
+			"isValue": "true"
+		}
+	},
+
+	{
+		"op": "add",
+		"path": "/variants/-",
+		"value": {
+			"code": "ocean-shallow",
+			"comment": "Lots of water, continental slope",
+			"hexcolor": "#0000FF",
+			"weight": 100,
+			"minTemp": -50,
+			"maxTemp": 50,
+			"useClimateMap": false,
+			"terrainOctaves": [ 0, 0, 0, 0, 1, 0.1, 0.25, 0.3, 0 ],
+			"terrainOctaveThresholds": [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			"terrainYKeyPositions": [ 0, 0.28, 0.31, 0.33, 0.36, 0.41, 0.43 ],
+			"terrainYKeyThresholds": [ 1, 1, 0.5, 0.32, 0.2, 0.15, 0 ],
+			"mutations": [
+				{
+					"chance": 0.70,
+					"code": "continental shelf",
+					"hexcolor": "#0000FF",
+					"terrainOctaves": [ 1, 1, 1, 1, 1, 0.1, 0.2, 0, 0 ],
+					"terrainYKeyPositions": [ 0, 0.30, 0.32, 0.35, 0.38, 0.42, 0.43 ],
+					"terrainYKeyThresholds": [ 1, 1, 0.7, 0.5, 0.4, 0.35, 0.25 ]
+				}
+			]
+		},
+		"file": "game:worldgen/landforms.json",
+		"condition": {
+			"when": "LOCseasEnabled",
+			"isValue": "true"
+		}
+
+	}
 ]
