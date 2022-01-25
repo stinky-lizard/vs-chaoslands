@@ -90,8 +90,8 @@ namespace ChaosLands
             {
                 return false;
             }
-            if (whenInEmotionState != null && !entity.HasEmotionState(whenInEmotionState)) return false;
-            if (whenNotInEmotionState != null && entity.HasEmotionState(whenNotInEmotionState)) return false;
+            if (whenInEmotionState != null && !entity.GetBehavior<EntityBehaviorEmotionStates>().IsInEmotionState(whenInEmotionState)) return false;
+            if (whenNotInEmotionState != null && entity.GetBehavior<EntityBehaviorEmotionStates>().IsInEmotionState(whenNotInEmotionState)) return false;
 
             Vec3d pos = entity.ServerPos.XYZ.Add(0, entity.CollisionBox.Y2 / 2, 0).Ahead(entity.CollisionBox.XSize / 2, 0, entity.ServerPos.Yaw);
 
@@ -170,7 +170,7 @@ namespace ChaosLands
                 if (!hasDirectContact(targetEntity)) return false;
                 entity.Die(EnumDespawnReason.Combusted);
 
-                (world as IServerWorldAccessor).CreateExplosion(entity.Pos.AsBlockPos, EnumBlastType.RockBlast, damage, damage);
+                (world as IServerWorldAccessor)?.CreateExplosion(entity.SidedPos.AsBlockPos, EnumBlastType.RockBlast, 3, 3);
 
                 damageInflicted = true;
             }

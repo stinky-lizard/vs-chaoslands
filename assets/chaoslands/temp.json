@@ -1,0 +1,14 @@
+{
+  {
+    "code":  "basiccave",
+    "comment": "A basic cave",
+    "hexcolor": "#79E02E",
+    "weight": 1,
+    "useClimateMap": false,
+    "terrainOctaves":          [0, 0, 0, 0, 0, 0,  0.75, 0.2, 0.1],
+    "terrainOctaveThresholds": [0, 0, 0, 0,   0,   0,0, 0, 0],
+
+    "terrainYKeyPositions":    [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.45],
+    "terrainYKeyThresholds":   [0.2, 0.25, 0.4, 0.25, 0.3, 0.35, 0.15]
+  },
+}

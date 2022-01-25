@@ -55,7 +55,7 @@ namespace ChaosLands
 
         public override bool ShouldExecute()
         {
-            bool result = (whenInEmotionState == null || entity.HasEmotionState(whenInEmotionState)) && (whenNotInEmotionState == null || !entity.HasEmotionState(whenNotInEmotionState)) && cooldownUntilMs < entity.World.ElapsedMilliseconds && (entity.RightHandItemSlot.Itemstack?.Collectible.Class == "ItemShield" || entity.LeftHandItemSlot.Itemstack?.Collectible.Class == "ItemShield");
+            bool result = (whenInEmotionState == null || entity.GetBehavior<EntityBehaviorEmotionStates>().IsInEmotionState(whenInEmotionState)) && (whenNotInEmotionState == null || !entity.GetBehavior<EntityBehaviorEmotionStates>().IsInEmotionState(whenNotInEmotionState)) && cooldownUntilMs < entity.World.ElapsedMilliseconds && (entity.RightHandItemSlot.Itemstack?.Collectible.Class == "ItemShield" || entity.LeftHandItemSlot.Itemstack?.Collectible.Class == "ItemShield");
             if (!result) return false;
 
             targetEntity = (EntityAgent)partitionUtil.GetNearestEntity(entity.ServerPos.XYZ, range, (e) => {

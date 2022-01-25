@@ -6,13 +6,13 @@ using Vintagestory.API.Util;
 using Vintagestory.API.MathTools;
 using Vintagestory.API;
 using Vintagestory.API.Datastructures;
+using System.Collections.Generic;
 
 namespace ChaosLands
 {
     public class EntityBehaviorLocustProps : EntityBehavior
     {
         float timer;
-        static AssetLocation toxicgas = new AssetLocation("chaoslands:gas-h2s-1");
 
         public override void Initialize(EntityProperties properties, JsonObject attributes)
         {
@@ -53,74 +53,78 @@ namespace ChaosLands
                     //if (entity.World.Rand.NextDouble() > 0.5) entity.Ignite();
                     return;
                 }
-
+                
                 if (type == "toxic")
                 {
-                    Block gas = entity.World.BlockAccessor.GetBlock(toxicgas);
-                    BlockPos pos = entity.SidedPos.AsBlockPos.Copy();
-
-                    for (int y = 0; y < 7; y++)
+                    if (entity.Api.Side == EnumAppSide.Server)
                     {
-                        Block over = entity.World.BlockAccessor.GetBlock(pos);
-                        if (over.SideSolid[BlockFacing.indexUP] || over.SideSolid[BlockFacing.indexDOWN]) break;
-                        if (over.BlockId == 0)
-                        {
-                            entity.World.BlockAccessor.SetBlock(gas.BlockId, pos);
-                            break;
-                        }
-                        int gasBuildUp = 0;
-                        if (over.FirstCodePart() == gas.FirstCodePart() && over.FirstCodePart(1) == gas.FirstCodePart(1) && (gasBuildUp = int.Parse(over.LastCodePart())) < 8)
-                        {
-                            Block newGas = entity.World.BlockAccessor.GetBlock(over.CodeWithVariant("level", (gasBuildUp + 1).ToString()));
-                            entity.World.BlockAccessor.SetBlock(newGas.BlockId, pos);
-                            break;
-                        }
+                        Dictionary<string, float> spewOut = new Dictionary<string, float>();
+                        spewOut.Add("co", 0.1f);
+                        spewOut.Add("no2", 0.1f);
+                        spewOut.Add("so2", 0.1f);
 
-                        pos.Up();
+                        entity.Api.Event.PushEvent("spreadGas", GasHelper.SerializeGasTreeData(entity.ServerPos.AsBlockPos, spewOut));
                     }
                 }
 
-                if (type == "corrupt")
+                if (type == "corrupt" && entity.Api.Side == EnumAppSide.Server)
                 {
-                    Block gas = entity.World.BlockAccessor.GetBlock(entity.SidedPos.AsBlockPos);
-                    string evolveInto = null;
-
-                    if (WildcardUtil.Match(new AssetLocation("chaoslands:gas-ch4-*"), gas.Code) || WildcardUtil.Match(new AssetLocation("chaoslands:gas-h2-*"), gas.Code))
+                    Dictionary<string, float> gases = null;
+                    if (gases != null && gases.Count > 0)
                     {
-                        evolveInto = "chaoslands:locust-corrupt-explosive";
+                        float most = 0;
+                        string mostGas = null;
+
+                        foreach (var gas in gases)
+                        {
+                            if (gas.Value > most)
+                            {
+                                most = gas.Value;
+                                mostGas = gas.Key;
+                            }
+                        }
+
+                        if (most < 0.25f) return;
+
+                        string evolveInto = null;
+
+                        if (mostGas == "ch4" || mostGas == "h2")
+                        {
+                            evolveInto = "chaoslands:locust-corrupt-explosive";
+                        }
+                        else if (mostGas == "coaldust" || mostGas == "h2s")
+                        {
+                            evolveInto = "chaoslands:locust-corrupt-fire";
+                        }
+                        else if (mostGas == "co" || mostGas == "so2" || mostGas == "no2")
+                        {
+                            evolveInto = "chaoslands:locust-corrupt-toxic";
+                        }
+
+                        if (evolveInto == null) return;
+
+                        EntityProperties evolutionType = entity.World.GetEntityType(new AssetLocation(evolveInto));
+                        Entity evolution = entity.World.ClassRegistry.CreateEntity(evolutionType);
+
+                        evolution.ServerPos.SetFrom(entity.ServerPos);
+                        evolution.Pos.SetFrom(evolution.ServerPos);
+
+                        entity.Die(EnumDespawnReason.Expire, null);
+                        entity.World.SpawnEntity(evolution);
                     }
-                    else if (WildcardUtil.Match(new AssetLocation("chaoslands:gas-coaldust-*"), gas.Code) || WildcardUtil.Match(new AssetLocation("chaoslands:gas-h2s-*"), gas.Code))
-                    {
-                        evolveInto = "chaoslands:locust-corrupt-fire";
-                    }
-                    else if (WildcardUtil.Match(new AssetLocation("chaoslands:gas-co-*"), gas.Code) || WildcardUtil.Match(new AssetLocation("chaoslands:gas-so2-*"), gas.Code) || WildcardUtil.Match(new AssetLocation("chaoslands:gas-no2-*"), gas.Code))
-                    {
-                        evolveInto = "chaoslands:locust-corrupt-toxic";
-                    }
-
-                    if (evolveInto == null) return;
-
-                    EntityProperties evolutionType = entity.World.GetEntityType(new AssetLocation(evolveInto));
-                    Entity evolution = entity.World.ClassRegistry.CreateEntity(evolutionType);
-
-                    evolution.ServerPos.SetFrom(entity.ServerPos);
-                    evolution.Pos.SetFrom(evolution.ServerPos);
-
-                    entity.Die(EnumDespawnReason.Expire, null);
-                    entity.World.SpawnEntity(evolution);
                 }
             }
         }
 
-        public override void OnEntityReceiveDamage(DamageSource damageSource, float damage)
+        public override void OnEntityReceiveDamage(DamageSource damageSource, ref float damage)
         {
             if (entity.LastCodePart() == "explosive" && damageSource.Type == EnumDamageType.Fire && entity.World.Side == EnumAppSide.Server)
             {
                 entity.Die(EnumDespawnReason.Combusted, damageSource);
-               (entity.World as IServerWorldAccessor).CreateExplosion(entity.SidedPos.AsBlockPos, EnumBlastType.RockBlast, 3, 3); 
+                (entity.World as IServerWorldAccessor)?.CreateExplosion(entity.SidedPos.AsBlockPos, EnumBlastType.RockBlast, 3, 3);
             }
 
-            base.OnEntityReceiveDamage(damageSource, damage);
+            base.OnEntityReceiveDamage(damageSource, ref damage);
         }
 
         public float FireProtection(float dmg, DamageSource source)

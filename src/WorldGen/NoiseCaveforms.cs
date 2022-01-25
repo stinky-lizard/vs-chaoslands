@@ -3,6 +3,11 @@ using Vintagestory.API.Server;
 using Vintagestory.ServerMods;
 using Vintagestory.ServerMods.NoObf;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Config;
+using System;
+using Vintagestory.API.Client;
+using Vintagestory.API.Datastructures;
+using Vintagestory.API.Util;
 
 namespace ChaosLands
 {
@@ -160,6 +165,178 @@ namespace ChaosLands
             return landforms.Variants[i].index;
         }
 
+
+    }
+
+    class MapLayerCaveforms : MapLayerBase
+    {
+        private NoiseCaveforms noiseCaveforms;
+        NoiseClimate climateNoise;
+
+        NormalizedSimplexNoise noisegenX;
+        NormalizedSimplexNoise noisegenY;
+        float wobbleIntensity;
+
+        public float landFormHorizontalScale = 1f;
+
+        public MapLayerCaveforms(long seed, NoiseClimate climateNoise, ICoreServerAPI api) : base(seed)
+        {
+            this.climateNoise = climateNoise;
+
+            float scale = TerraGenConfig.landformMapScale;
+
+            if (GameVersion.IsAtLeastVersion(api.WorldManager.SaveGame.CreatedGameVersion, "1.11.0-dev.1"))
+            {
+                scale *= Math.Max(1, api.WorldManager.MapSizeY / 256f);
+            }
+
+            noiseCaveforms = new NoiseCaveforms(seed, api, scale);
+
+            int woctaves = 2;
+            float wscale = 2f * TerraGenConfig.landformMapScale;
+            float wpersistence = 0.9f;
+            wobbleIntensity = TerraGenConfig.landformMapScale * 1.5f;
+            noisegenX = NormalizedSimplexNoise.FromDefaultOctaves(woctaves, 1 / wscale, wpersistence, seed + 2);
+            noisegenY = NormalizedSimplexNoise.FromDefaultOctaves(woctaves, 1 / wscale, wpersistence, seed + 1231296);
+        }
+
+
+        public override int[] GenLayer(int xCoord, int zCoord, int sizeX, int sizeZ)
+        {
+            int[] result = new int[sizeX * sizeZ];
+
+            for (int x = 0; x < sizeX; x++)
+            {
+                for (int z = 0; z < sizeZ; z++)
+                {
+                    int offsetX = (int)(wobbleIntensity * noisegenX.Noise(xCoord + x, zCoord + z));
+                    int offsetY = (int)(wobbleIntensity * noisegenY.Noise(xCoord + x, zCoord + z));
+
+                    int finalX = (xCoord + x + offsetX);
+                    int finalZ = (zCoord + z + offsetY);
+
+                    int climate = climateNoise.GetLerpedClimateAt(finalX / TerraGenConfig.climateMapScale, finalZ / TerraGenConfig.climateMapScale);
+                    int rain = (climate >> 8) & 0xff;
+                    int temp = TerraGenConfig.GetScaledAdjustedTemperature((climate >> 16) & 0xff, 0);
+
+                    result[z * sizeX + x] = noiseCaveforms.GetLandformIndexAt(
+                        finalX,
+                        finalZ,
+                        temp,
+                        rain
+                    );
+                }
+            }
+
+            return result;
+        }
+
+
+
+    }
+
+    public class GenCaveMaps : ModSystem
+    {
+        ICoreServerAPI sapi;
+
+        MapLayerBase caveformsGen;
+
+        int noiseSizeCaveform;
+
+        LatitudeData latdata = new LatitudeData();
+
+        public override bool ShouldLoad(EnumAppSide side)
+        {
+            return side == EnumAppSide.Server;
+        }
+
+        public override void StartServerSide(ICoreServerAPI api)
+        {
+            this.sapi = api;
+
+            api.Event.InitWorldGenerator(initWorldGen, "standard");
+            api.Event.InitWorldGenerator(initWorldGen, "superflat");
+
+            api.Event.MapRegionGeneration(OnMapRegionGen, "standard");
+            api.Event.MapRegionGeneration(OnMapRegionGen, "superflat");
+        }
+
+
+        public void initWorldGen()
+        {
+            long seed = sapi.WorldManager.Seed;
+            noiseSizeCaveform = sapi.WorldManager.RegionSize / TerraGenConfig.landformMapScale;
+
+            ITreeAttribute worldConfig = sapi.WorldManager.SaveGame.WorldConfiguration;
+            string climate = worldConfig.GetString("worldClimate", "realistic");
+            NoiseClimate noiseClimate;
+
+            float tempModifier = worldConfig.GetString("globalTemperature", "1").ToFloat(1);
+            float rainModifier = worldConfig.GetString("globalPrecipitation", "1").ToFloat(1);
+            latdata.polarEquatorDistance = worldConfig.GetString("polarEquatorDistance", "50000").ToInt(50000);
+
+            switch (climate)
+            {
+                case "realistic":
+                    int spawnMinTemp = 6;
+                    int spawnMaxTemp = 14;
+
+                    string startingClimate = worldConfig.GetString("startingClimate");
+                    switch (startingClimate)
+                    {
+                        case "hot":
+                            spawnMinTemp = 28;
+                            spawnMaxTemp = 32;
+                            break;
+                        case "warm":
+                            spawnMinTemp = 19;
+                            spawnMaxTemp = 23;
+                            break;
+                        case "cool":
+                            spawnMinTemp = -5;
+                            spawnMaxTemp = 1;
+                            break;
+                        case "icy":
+                            spawnMinTemp = -15;
+                            spawnMaxTemp = -10;
+                            break;
+                    }
+
+                    noiseClimate = new NoiseClimateRealistic(seed, (double)sapi.WorldManager.MapSizeZ / TerraGenConfig.climateMapScale / TerraGenConfig.climateMapSubScale, latdata.polarEquatorDistance, spawnMinTemp, spawnMaxTemp);
+                    latdata.isRealisticClimate = true;
+                    latdata.ZOffset = (noiseClimate as NoiseClimateRealistic).ZOffset;
+                    break;
+
+                default:
+                    noiseClimate = new NoiseClimatePatchy(seed);
+                    break;
+            }
+
+            noiseClimate.rainMul = rainModifier;
+            noiseClimate.tempMul = tempModifier;
+
+            caveformsGen = GetCaveformMapGen(seed + 4, noiseClimate, sapi);
+        }
+
+        private void OnMapRegionGen(IMapRegion mapRegion, int regionX, int regionZ)
+        {
+            mapRegion.ModMaps.Add("caveforms", new IntDataMap2D());
+            int pad = TerraGenConfig.landformMapPadding;
+            mapRegion.ModMaps["caveforms"].Data = caveformsGen.GenLayer(regionX * noiseSizeCaveform - pad, regionZ * noiseSizeCaveform - pad, noiseSizeCaveform + 2 * pad, noiseSizeCaveform + 2 * pad);
+            mapRegion.ModMaps["caveforms"].Size = noiseSizeCaveform + 2 * pad;
+            mapRegion.ModMaps["caveforms"].TopLeftPadding = mapRegion.ModMaps["caveforms"].BottomRightPadding = pad;
+
+
+            mapRegion.DirtyForSaving = true;
+        }
+
+        public static MapLayerBase GetCaveformMapGen(long seed, NoiseClimate climateNoise, ICoreServerAPI api)
+        {
+            MapLayerBase caveforms = new MapLayerCaveforms(seed + 12, climateNoise, api);
+            caveforms.DebugDrawBitmap(DebugDrawMode.LandformRGB, 0, 0, "LCaveforms 1 - Wobble Landforms");
+
+            return caveforms;
+        }
 
     }
 }

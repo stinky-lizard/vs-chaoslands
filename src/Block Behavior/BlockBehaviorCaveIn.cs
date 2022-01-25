@@ -100,7 +100,7 @@ namespace ChaosLands
                 return true;
             }
 
-            if (transformInstead)
+            if (LandsOfChaosConfig.Loaded.CaveInCracks && transformInstead)
             {
                 Block transformation = world.GetBlock(transformInto);
 

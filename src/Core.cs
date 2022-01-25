@@ -10,6 +10,11 @@ using BuffStuff;
 using HarmonyLib;
 using Vintagestory.API.MathTools;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Vintagestory.ServerMods;
+using Vintagestory.API.Datastructures;
+using ProtoBuf;
+using Vintagestory.API.Common.Entities;
 
 namespace ChaosLands
 {
@@ -36,7 +41,6 @@ namespace ChaosLands
             }
 
             api.World.Config.SetBool("LOClocustHordeEnabled", LandsOfChaosConfig.Loaded.LocustHordeEnabled);
-            api.World.Config.SetBool("LOCgasesEnabled", LandsOfChaosConfig.Loaded.GasesEnabled);
             api.World.Config.SetBool("LOCcaveinsEnabled", LandsOfChaosConfig.Loaded.CaveInsEnabled);
             api.World.Config.SetBool("LOCbossesEnabled", LandsOfChaosConfig.Loaded.BossBattlesEnabled);
             api.World.Config.SetBool("LOCtoxicLocustEnabled", LandsOfChaosConfig.Loaded.ToxicLocustEnabled);
@@ -54,29 +58,22 @@ namespace ChaosLands
         {
             base.Start(api);
 
+            api.RegisterItemClass("test", typeof(ItemTester));
+
             api.RegisterBlockClass("BlockLocustHorde", typeof(BlockLocustHorde));
-            api.RegisterBlockClass("BlockLightGas", typeof(BlockLightGas));
-            api.RegisterBlockClass("BlockHeavyGas", typeof(BlockHeavyGas));
 
             api.RegisterBlockClass("BlockSupportBeam", typeof(BlockSupportBeam));
             api.RegisterBlockClass("BlockDeepSeaweed", typeof(BlockDeepSeaweed));
             api.RegisterBlockClass("BlockSeagrass", typeof(BlockSeagrass));
             api.RegisterBlockClass("BlockShallowWaterLily", typeof(BlockShallowWaterLily));
-            api.RegisterBlockClass("BlockLightPlant", typeof(BlockLightPlant));
 
             api.RegisterBlockBehaviorClass("CaveIn", typeof(BlockBehaviorCaveIn));
-            api.RegisterBlockBehaviorClass("PlantAbsorb", typeof(BlockBehaviorPlantAbsorb));
-            api.RegisterBlockBehaviorClass("SparkGas", typeof(BlockBehaviorSparkGas));
-            api.RegisterBlockBehaviorClass("MineGas", typeof(BlockBehaviorMineGas));
-            api.RegisterBlockBehaviorClass("ExplosionGas", typeof(BlockBehaviorExplosionGas));
 
             api.RegisterBlockEntityClass("SupportBeam", typeof(BlockEntitySupportBeam));
 
-            api.RegisterBlockEntityBehaviorClass("PlantAbsorb", typeof(BlockEntityBehaviorPlantAbsorb));
-            api.RegisterBlockEntityBehaviorClass("BurningProduces", typeof(BlockEntityBehaviorBurningProduces));
+            
 
             api.RegisterEntityBehaviorClass("gear", typeof(EntityBehaviorGear));
-            api.RegisterEntityBehaviorClass("air", typeof(EntityBehaviorAir));
             api.RegisterEntityBehaviorClass("locustprops", typeof(EntityBehaviorLocustProps));
             api.RegisterEntityBehaviorClass("watergone", typeof(EntityBehaviorBossWaterRemoval));
             api.RegisterEntityBehaviorClass("bosstalk", typeof(EntityBehaviorBossTalk));
@@ -112,11 +109,6 @@ namespace ChaosLands
         public override void StartClientSide(ICoreClientAPI api)
         {
             base.StartClientSide(api);
-            if (LandsOfChaosConfig.Loaded.BreathingEnabled)
-            {
-                HudElementAirBar airBar = new HudElementAirBar(api);
-                airBar.TryOpen();
-            }
         }
     }
 
@@ -170,17 +162,17 @@ namespace ChaosLands
 
         public float CaveInDust { get; set; } = 0f;
 
+        public bool CaveInCracks { get; set; } = false;
+
         //Gas settings
-
-        public int GasPlantAbsorptionRadius { get; set; } = 2;
-
-        public int GasPlantAbsorptionMinLightLevel { get; set; } = 13;
 
         public bool GasExplosions { get; set; } = true;
 
         public double GasPickaxeExplosion { get; set; } = 0.25;
 
-        public int GasMaxPullAmount { get; set; } = 5;
+        public int GasSpreadRadius { get; set; } = 7;
+
+        public int GasExplosionRadius { get; set; } = 2;
 
         #region Control Content
 
@@ -215,89 +207,95 @@ namespace ChaosLands
         public bool HaliteFormationsEnabled { get; set; } = false;
 
         public bool RivuletsEnabled { get; set; } = true;
+
+        public bool CaveBiomesEnabled { get; set; } = true;
         #endregion
     }
 
-    public class BlockLightPlant : Block
+    public class ItemTester : Item
     {
-        public override bool TryPlaceBlockForWorldGen(IBlockAccessor blockAccessor, BlockPos pos, BlockFacing onBlockFace, LCGRandom worldgenRandom)
+        public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
-            bool result = base.TryPlaceBlockForWorldGen(blockAccessor, pos, onBlockFace, worldgenRandom);
+            handling = EnumHandHandling.PreventDefault;
 
-            if (result) FloodFillDecorAt(pos.X, pos.Y, pos.Z, blockAccessor, worldgenRandom);
 
-            return result;
+            Dictionary<string, float> gases = new Dictionary<string, float>();
+            gases.Add("why", 9);
+            GasHelper.CollectGases(byEntity.SidedPos.AsBlockPos, 5, null);
+
         }
 
-        public void FloodFillDecorAt(int posX, int posY, int posZ, IBlockAccessor accessor, LCGRandom rand)
+        public override bool OnBlockBrokenWith(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel, float dropQuantityMultiplier = 1)
         {
-            Queue<Vec4i> bfsQueue = new Queue<Vec4i>();
-            HashSet<BlockPos> fillablePositions = new HashSet<BlockPos>();
-
-            bfsQueue.Enqueue(new Vec4i(posX, posY, posZ, 0));
-            fillablePositions.Add(new BlockPos(posX, posY, posZ));
-
-            float radius = 10;
-
-            BlockFacing[] faces = BlockFacing.ALLFACES;
-            BlockPos curPos = new BlockPos();
-            List<BlockPos> modifyPos = new List<BlockPos>();
-            List<IWorldChunk> chunksMarked = new List<IWorldChunk>();
-            string[] plants = { "lichen", "moss", "barnacle" };
-            bool one = false;
-
-
-
-
-            while (bfsQueue.Count > 0)
+            if (byEntity.Api.Side == EnumAppSide.Server)
             {
-                Vec4i bpos = bfsQueue.Dequeue();
 
-                foreach (BlockFacing facing in faces)
+            }
+
+            return base.OnBlockBrokenWith(world, byEntity, itemslot, blockSel, dropQuantityMultiplier);
+        }
+    }
+
+    public class GenBossAreana : ModStdWorldGen
+    {
+        ICoreServerAPI api;
+        IWorldGenBlockAccessor worldgenBlockAccessor;
+
+        public override double ExecuteOrder()
+        {
+            return 0.91;
+        }
+
+        public override void StartServerSide(ICoreServerAPI api)
+        {
+            base.StartServerSide(api);
+
+            this.api = api;
+
+            api.Event.InitWorldGenerator(initWorldGen, "standard");
+            api.Event.ChunkColumnGeneration(OnChunkColumnGen, EnumWorldGenPass.Vegetation, "standard");
+            api.Event.InitWorldGenerator(initWorldGen, "superflat");
+            api.Event.ChunkColumnGeneration(OnChunkColumnGen, EnumWorldGenPass.Vegetation, "superflat");
+            api.Event.GetWorldgenBlockAccessor(OnWorldGenBlockAccessor);
+        }
+
+        internal void initWorldGen()
+        {
+            chunksize = api.World.BlockAccessor.ChunkSize;
+            LoadGlobalConfig(api);
+        }
+
+        private void OnWorldGenBlockAccessor(IChunkProviderThread chunkProvider)
+        {
+            worldgenBlockAccessor = chunkProvider.GetBlockAccessor(false);
+        }
+
+        private void OnChunkColumnGen(IServerChunk[] chunks, int chunkX, int chunkZ, ITreeAttribute chunkGenParams = null)
+        {
+            if (chunkX > 0 || chunkZ > 0) return;
+
+            BlockPos tmpPos = new BlockPos();
+
+            for (int x = 0; x < chunksize; x++)
+            {
+                for (int y = 0; y < chunksize; y++)
                 {
-                    curPos.Set(bpos.X + facing.Normali.X, bpos.Y + facing.Normali.Y, bpos.Z + facing.Normali.Z);
-
-                    Block block = accessor.GetBlock(curPos);
-                    bool inBounds = bpos.W < radius;
-
-                    if (inBounds)
+                    for (int z = 0; z < chunksize; z++)
                     {
-                        if (block.BlockId == 0 && !fillablePositions.Contains(curPos))
-                        {
-                            bfsQueue.Enqueue(new Vec4i(curPos.X, curPos.Y, curPos.Z, bpos.W + 1));
-                            fillablePositions.Add(curPos.Copy());
-                        }
-                        else if (block.SideSolid[facing.Opposite.Index])
-                        {
-                            Block attach = accessor.GetBlock(new AssetLocation("game:attachingplant-" + plants[rand.NextInt(plants.Length)]));
-                            IWorldChunk dirty = accessor.GetChunkAtBlockPos(curPos);
-                            if (dirty != null)
-                            {
-                                dirty.AddDecor(accessor, attach, curPos, facing.Opposite);
-                                if (!chunksMarked.Contains(dirty))
-                                {
-                                    chunksMarked.Add(dirty);
-                                    modifyPos.Add(curPos.Copy());
-                                }
-
-                                if (!one)
-                                {
-                                    System.Diagnostics.Debug.WriteLine(curPos);
-                                    one = true;
-                                }
-                            }
-
-                        }
-
+                        tmpPos.Set(x,y,z);
+                        worldgenBlockAccessor.SetBlock(GlobalConfig.basaltBlockId, tmpPos);
                     }
                 }
-
             }
 
-            foreach (BlockPos dirty in modifyPos)
+            api.World.Claims.Add(new LandClaim()
             {
-                accessor.MarkChunkDecorsModified(dirty);
-            }
+                Areas = new List<Cuboidi>() { new Cuboidi(0, 0, 0, chunksize, chunksize, chunksize) },
+                Description = "Sacred Arena",
+                ProtectionLevel = 10,
+                LastKnownOwnerName = "Dungeon Master",
+                AllowUseEveryone = false
+            });
         }
     }
 }

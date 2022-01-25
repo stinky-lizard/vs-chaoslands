@@ -1,0 +1,93 @@
+{
+  "enabled": true,
+
+  "biomes": [
+    {
+      "code": "living",
+      "minY": 0.28,
+      "maxY": 0.43,
+
+      "hangingBlocksJ": ["game:hanginglichen-oldmans-short", "game:hanginglichen-oldmans-top", "game:hanginglichen-oldmans-segment", "game:hanginglichen-oldmans-bottom"],
+      "hangingBlockChance": 0.3,
+      "interiorBlock": null,
+      "floorBlocksJ": ["game:saltpeter-d"],
+      "floorBlockChance" : 0.4,
+      "groundBlocksJ": ["game:soil-medium-none"],
+      "ceilingBlocksJ": ["game:soil-medium-none"],
+      "insideBlocksIgnore" : false,
+      "ceilingBlockIgnore" : false,
+      "groundBlockIgnore" : false,
+      "atmosphere" : {"co2": 0.1},
+      "variants": [
+        {
+          "code": "aquifer",
+          "minTemp": 0,
+          "maxTemp": 60,
+          "minRain": 0,
+          "maxRain": 0.2,
+
+          "hangingBlocksJ": [],
+          "hangingBlockChance": 0.3,
+          "interiorBlock": "game:water-still-7",
+          "floorBlocksJ": ["chaoslands:looseboulders-halite-water"],
+          "floorBlockChance" : 0.1,
+          "groundBlocksJ": ["game:muddygravel", "game:rock-limestone"],
+          "ceilingBlocksJ": ["game:rock-limestone", "game:rock-limestone"],
+          "insideBlocksIgnore" : false,
+          "ceilingBlockIgnore" : true,
+          "groundBlockIgnore" : true
+        }
+      ]
+    },
+
+    {
+      "code": "dead",
+      "minY": 0.14,
+      "maxY": 0.28,
+
+      "hangingBlocksJ": ["chaoslands:snottite-end1", "chaoslands:snottite-end2", "chaoslands:snottite-base1", "chaoslands:snottite-base2", "chaoslands:snottite-base1-short", "chaoslands:snottite-base2-short", "chaoslands:snottite-segment1", "chaoslands:snottite-segment2"],
+      "hangingBlockChance": 0.3,
+      "interiorBlock": "game:air",
+      "floorBlocksJ": ["game:mushroom-flyagaric-normal-free"],
+      "floorBlockChance" : 0.1,
+      "groundBlocksJ": ["game:soil-compost-none"],
+      "ceilingBlocksJ": ["game:soil-compost-none"],
+      "atmosphere" : {"co2": 0.25, "h2s": 0.05, "ch4": 0.03},
+      "variants": [
+        {
+          "code": "bony",
+          "minTemp": -40,
+          "maxTemp": 60,
+          "minRain": 0,
+          "maxRain": 0.2,
+
+          "hangingBlocksJ": ["game:spiderweb"],
+          "hangingBlockChance": 0.3,
+          "interiorBlock": "game:air",
+          "floorBlocksJ": ["game:bonyremains-ribcage", "game:bonyremains-cowskull-up", "game:drycarcass-tiny", "game:drycarcass-small", "game:drycarcass-medium", "game:drycarcass-large", "game:drycarcass-humanoid1", "game:drycarcass-humanoid2"],
+          "floorBlockChance" : 0.1,
+          "groundBlocksJ": ["game:bonysoil"],
+          "ceilingBlocksJ": ["game:bonysoil"]
+        },
+      ]
+    },
+    {
+      "code": "quartz",
+      "minTemp": -40,
+      "maxTemp": 60,
+      "minY": 0,
+      "maxY": 0.14,
+      "minRain": 0,
+      "maxRain": 1,
+
+      "hangingBlocksJ": ["game:crystal-milkyquartz-large1-down", "game:crystal-milkyquartz-large2-down", "game:crystal-milkyquartz-small1-down", "game:crystal-milkyquartz-small2-down"],
+      "hangingBlockChance": 0.5,
+      "interiorBlock": "game:air",
+      "floorBlocksJ": ["game:crystal-milkyquartz-large1-up", "game:crystal-milkyquartz-large2-up", "game:crystal-milkyquartz-small1-up", "game:crystal-milkyquartz-small2-up"],
+      "floorBlockChance" : 0.5,
+      "groundBlocksJ": ["game:ore-quartz-{rocktype}"],
+      "ceilingBlocksJ": ["game:ore-quartz-{rocktype}"],
+      "atmosphere" : {"no2": 0.05, "so2": 0.05, "co": 0.01},
+    },
+  ],
+}

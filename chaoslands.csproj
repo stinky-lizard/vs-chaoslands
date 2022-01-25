@@ -81,38 +81,32 @@
     <Compile Include="src\AI\AiTaskShield.cs" />
     <Compile Include="src\AI\AiTaskVenomMeleeAttack.cs" />
     <Compile Include="src\Block Behavior\BlockBehaviorCaveIn.cs" />
-    <Compile Include="src\Block Behavior\BlockBehaviorExplosionGas.cs" />
-    <Compile Include="src\Block Behavior\BlockBehaviorMineGas.cs" />
-    <Compile Include="src\Block Behavior\BlockBehaviorPlantAbsorb.cs" />
-    <Compile Include="src\Block Behavior\BlockBehaviorSparkGas.cs" />
-    <Compile Include="src\Block Entity Behavior\BlockEntityBehaviorBurningProduces.cs" />
-    <Compile Include="src\Block Entity Behavior\BlockEntityBehaviorPlantAbsorb.cs" />
     <Compile Include="src\Block Entity\BlockEntitySupportBeam.cs" />
     <Compile Include="src\Block\BlockDeepSeaweed.cs" />
     <Compile Include="src\Block\BlockSeagrass.cs" />
     <Compile Include="src\Block\BlockShallowWaterLily.cs" />
-    <Compile Include="src\Block\BlockGas.cs" />
-    <Compile Include="src\Block\BlockHeavyGas.cs" />
-    <Compile Include="src\Block\BlockLightGas.cs" />
     <Compile Include="src\Block\BlockLocustHorde.cs" />
     <Compile Include="src\Block\BlockSupportBeam.cs" />
     <Compile Include="src\BuffStuff.cs" />
+    <Compile Include="src\GasHelper.cs" />
+    <Compile Include="src\WorldGen\CaveBiomeSystem.cs" />
     <Compile Include="src\Core.cs" />
     <Compile Include="src\Effects\ToxicGasEffect.cs" />
-    <Compile Include="src\Entity Behavior\EntityBehaviorAir.cs" />
     <Compile Include="src\Entity Behavior\EntityBehaviorBossTalk.cs" />
     <Compile Include="src\Entity Behavior\EntityBehaviorBossWaterRemoval.cs" />
     <Compile Include="src\Entity Behavior\EntityBehaviorGear.cs" />
     <Compile Include="src\Entity Behavior\EntityBehaviorLocustProps.cs" />
     <Compile Include="src\Entity\EntityNPC.cs" />
     <Compile Include="src\WorldGen\GenCaveTerra.cs" />
-    <Compile Include="src\GUI\HudElementAirBar.cs" />
     <Compile Include="src\Inventory\InventoryNPCGear.cs" />
     <Compile Include="src\WorldGen\NoiseCaveforms.cs" />
     <Compile Include="src\Patches.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

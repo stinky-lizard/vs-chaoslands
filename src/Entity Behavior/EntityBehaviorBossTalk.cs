@@ -37,9 +37,9 @@ namespace ChaosLands
             {
                 timer = 0;
 
-                if (entity.HasEmotionState("aggressiveondamage"))
+                if (entity.GetBehavior<EntityBehaviorEmotionStates>().IsInEmotionState("aggressiveondamage"))
                 {
-                    if (entity.HasEmotionState("fleeondamage")) SpeakToPlayers(bossLow[entity.World.Rand.Next(bossLow.Length)]);
+                    if (entity.GetBehavior<EntityBehaviorEmotionStates>().IsInEmotionState("fleeondamage")) SpeakToPlayers(bossLow[entity.World.Rand.Next(bossLow.Length)]);
                     else SpeakToPlayers(bossHealthy[entity.World.Rand.Next(bossHealthy.Length)]);
                 }
             }

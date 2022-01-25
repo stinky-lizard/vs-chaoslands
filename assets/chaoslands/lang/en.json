@@ -33,6 +33,7 @@
   "block-brokenrock-whitemarble": "Compromised White marble rock",
   "block-brokenrock-greenmarble": "Compromised Green marble rock",
   "block-brokenrock-redmarble": "Compromised Pink cream marble rock",
+  "block-snottite-*" : "Snottite",
 
   "item-creature-locust-corrupt-fire": "Flaming Corrupt Locust",
   "item-creature-locust-corrupt-explosive": "Bomber Corrupt Locust",
@@ -63,5 +64,5 @@
   "bosstalkdied-clockmaker-1": "Corrupted Clockmaker: Jonas...machines...why...have you forsaken me?",
   "bosstalkdied-clockmaker-2": "Corrupted Clockmaker: What...are you? You...monster.",
   "bosstalkdied-clockmaker-3": "Corrupted Clockmaker: I survived the plague...to die...to a drifter.",
-  "bossdefeated": "The strange energy field has gone away."
+  "bossdefeated": "The strange energy field has gone away.",
 }

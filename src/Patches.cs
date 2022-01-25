@@ -74,7 +74,7 @@ namespace ChaosLands
         }
     }
 
-    [HarmonyPatch(typeof(ITreeGenerator))]
+    [HarmonyPatch(typeof(TreeGen))]
     [HarmonyPatch("GrowTree")]
     public class TreeGrowth
     {
@@ -107,118 +107,6 @@ namespace ChaosLands
         static void DefenseBonus(EntityBehaviorHealth __instance)
         {
             __instance.onDamaged += (dmg, source) => { return dmg * __instance.entity.Stats.GetBlended("vulenrability"); };
-        }
-    }
-
-    [HarmonyPatch(typeof(EntitySidedProperties))]
-    public class BreatheOverride
-    {
-        [HarmonyPrepare]
-        static bool Prepare()
-        {
-            return LandsOfChaosConfig.Loaded.BreathingEnabled;
-        }
-
-        [HarmonyPatch("loadBehaviors")]
-        [HarmonyPostfix]
-        static void ChangeToAir(Entity entity, EntityProperties properties, EntitySidedProperties __instance, JsonObject[] ___BehaviorsAsJsonObj)
-        {
-            for (int i = 0; i < __instance.Behaviors.Count; i++)
-            {
-                if (__instance.Behaviors[i] is EntityBehaviorBreathe)
-                {
-                    EntityBehavior air = new EntityBehaviorAir(entity);
-                    air.Initialize(properties, ___BehaviorsAsJsonObj[i]);
-
-                    __instance.Behaviors[i] = air;
-                    break;
-                }
-            }
-        }
-    }
-
-    //Most blocks when blown up leave behind carbon monoxide or nitrogen dioxide
-    [HarmonyPatch(typeof(Block))]
-    public class BombNitrogen
-    {
-        [HarmonyPrepare]
-        static bool Prepare()
-        {
-            return LandsOfChaosConfig.Loaded.GasesEnabled;
-        }
-
-        [HarmonyPatch("OnBlockExploded")]
-        [HarmonyPostfix]
-        static void ChangeToAir(IWorldAccessor world, BlockPos pos, BlockPos explosionCenter, EnumBlastType blastType, Block __instance)
-        {
-            BlockBehaviorExplosionGas boom = world.BlockAccessor.GetBlock(pos).GetBehavior<BlockBehaviorExplosionGas>();
-            Block gas;
-            if (boom != null) return;
-            gas = world.BlockAccessor.GetBlock(new AssetLocation(world.Rand.NextDouble() > 0.5 ? "chaoslands:gas-co-2" : "chaoslands:gas-no2-2"));
-
-            world.RegisterCallback((time) => { if (world.BlockAccessor.GetBlock(pos).BlockId == 0) world.BlockAccessor.SetBlock(gas.BlockId, pos); }, 3000);
-            
-        }
-    }
-
-    //Entities burn up and produce carbon monoxide
-    [HarmonyPatch(typeof(Entity))]
-    public class SmokeDeath
-    {
-        [HarmonyPrepare]
-        static bool Prepare()
-        {
-            return LandsOfChaosConfig.Loaded.GasesEnabled;
-        }
-
-        [HarmonyPatch("Die")]
-        [HarmonyPostfix]
-        static void BurnToSmoke(EnumDespawnReason reason, DamageSource damageSourceForDeath, Entity __instance)
-        {
-            if (damageSourceForDeath?.Type != EnumDamageType.Fire) return;
-
-            Block gas = __instance.World.BlockAccessor.GetBlock(new AssetLocation("chaoslands:gas-co-8"));
-            BlockPos pos = __instance.ServerPos.AsBlockPos;
-
-            for (int y = 0; y < 7; y++)
-            {
-                Block over = __instance.World.BlockAccessor.GetBlock(pos);
-                if (over.SideSolid[BlockFacing.indexUP] || over.SideSolid[BlockFacing.indexDOWN]) return;
-                if (over.BlockId == 0)
-                {
-                    __instance.World.BlockAccessor.SetBlock(gas.BlockId, pos);
-                    return;
-                }
-                int gasBuildUp = 0;
-                if (over.FirstCodePart() == gas.FirstCodePart() && over.FirstCodePart(1) == gas.FirstCodePart(1) && (gasBuildUp = int.Parse(over.LastCodePart())) < 8)
-                {
-                    Block newGas = __instance.World.BlockAccessor.GetBlock(over.CodeWithVariant("level", (gasBuildUp + 1).ToString()));
-                    __instance.World.BlockAccessor.SetBlock(newGas.BlockId, pos);
-                    return;
-                }
-
-                pos.Up();
-            }
-        }
-    }
-
-    //Toxic gases and dust when gathering charcoal
-    [HarmonyPatch(typeof(BlockLayeredSlowDig))]
-    public class CharcoalSuffocation
-    {
-        [HarmonyPrepare]
-        static bool Prepare()
-        {
-            return LandsOfChaosConfig.Loaded.GasesEnabled;
-        }
-
-        [HarmonyPatch("GetPrevLayer")]
-        [HarmonyPostfix]
-        static void CharcoalRemains(IWorldAccessor world, ref Block __result)
-        {
-            if (__result != null) return;
-            Block gas = world.BlockAccessor.GetBlock(new AssetLocation(world.Rand.NextDouble() > 0.25 ? "chaoslands:gas-coaldust-8" : "chaoslands:gas-co-8"));
-            __result = gas;
         }
     }
 

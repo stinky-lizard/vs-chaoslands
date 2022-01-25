@@ -7,6 +7,7 @@ using Vintagestory.API.MathTools;
 using System;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.Config;
+using Vintagestory.API.Util;
 
 namespace ChaosLands
 {
@@ -106,9 +107,6 @@ namespace ChaosLands
 
             noiseTemp = new double[paddedNoiseWidth * paddedNoiseWidth * paddedNoiseHeight];
 
-            //TerraGenConfig.seaLevel = (int)(0.4313725490196078 * api.WorldManager.MapSizeY);
-            //api.WorldManager.SetSeaLevel(TerraGenConfig.seaLevel);
-
             if (GameVersion.IsAtLeastVersion(api.WorldManager.SaveGame.CreatedGameVersion, "1.12.0-dev.1"))
             {
                 distort2dx = new SimplexNoise(new double[] { 55, 40, 30, 10 }, new double[] { 1 / 500.0, 1 / 250.0, 1 / 125.0, 1 / 65 }, api.World.Seed + 9876 + 0);
@@ -116,7 +114,6 @@ namespace ChaosLands
             }
             else
             {
-                // Whoops, looks like we made a typo here. Old code stays so we don't break worldgen on old worlds
                 distort2dx = new SimplexNoise(new double[] { 55, 40, 30, 10 }, new double[] { 1 / 500.0, 1 / 250.0, 1 / 125.0, 1 / 65 }, api.World.SeaLevel + 9876 + 0);
                 distort2dz = new SimplexNoise(new double[] { 55, 40, 30, 10 }, new double[] { 1 / 500.0, 1 / 250.0, 1 / 125.0, 1 / 65 }, api.World.SeaLevel + 9877 + 0);
             }
@@ -131,6 +128,9 @@ namespace ChaosLands
         {
             caveforms = NoiseCaveforms.landforms;
             IMapChunk mapchunk = chunks[0].MapChunk;
+            bool[][] caveMarked = new bool[chunks.Length][];
+            bool[] caveChunksMarked = new bool[chunks.Length];
+            for (int i = 0; i < caveMarked.Length; i++) caveMarked[i] = new bool[chunks[0].Blocks.Length];
 
             int climateUpLeft;
             int climateUpRight;
@@ -315,6 +315,8 @@ namespace ChaosLands
                                                 terrainheightmap[mapIndex] = rainheightmap[mapIndex] = (ushort)(posY - 1);
                                             }
                                             chunks[chunkY].Blocks[chunkIndex] = posY < 12 ? GlobalConfig.lavaBlockId : 0;
+                                            caveMarked[chunkY][chunkIndex] = true;
+                                            caveChunksMarked[chunkY] = true;
                                         }
                                     }
 
@@ -337,6 +339,14 @@ namespace ChaosLands
                     }
                 }
             }
+
+            for (int i = 0; i < chunks.Length; i++)
+            {
+                byte[] caveAreas = SerializerUtil.Serialize(caveMarked[i]);
+                byte[] caveChunks = SerializerUtil.Serialize(caveChunksMarked[i]);
+                chunks[i].SetServerModdata("noiseCaves", caveAreas);
+                chunks[i].SetServerModdata("noiseCavesChunks", caveChunks);
+            }
         }
 
 
@@ -348,7 +358,7 @@ namespace ChaosLands
             LandformMapByRegion.TryGetValue(regionZ * regionMapSize + regionX, out map);
             if (map != null) return map;
 
-            IntDataMap2D lmap = mapchunk.MapRegion.LandformMap;
+            IntDataMap2D lmap = mapchunk.MapRegion.ModMaps["caveforms"];
             // 2. Create
             map = LandformMapByRegion[regionZ * regionMapSize + regionX]
                 //Removed landform smoothing because it caused no gave gaps between landforms
@@ -366,7 +376,7 @@ namespace ChaosLands
                 float threshold = 0;
                 for (int i = 0; i < indices.Length; i++)
                 {
-                    threshold += caveforms.LandFormsByIndex[indices[i].Index % caveforms.LandFormsByIndex.Length].TerrainYThresholds[y] * indices[i].Weight;
+                    threshold += caveforms.LandFormsByIndex[indices[i].Index].TerrainYThresholds[y] * indices[i].Weight;
                 }
 
                 values[y] = threshold;
@@ -389,7 +399,7 @@ namespace ChaosLands
                 for (int i = 0; i < Math.Min(caveforms.LandFormsByIndex.Length, indices.Length); i++)
                 {
 
-                    LandformVariant l = caveforms.LandFormsByIndex[indices[i].Index % caveforms.LandFormsByIndex.Length];
+                    LandformVariant l = caveforms.LandFormsByIndex[indices[i].Index];
                     amplitude += l.TerrainOctaves[octave] * indices[i].Weight;
                     threshold += l.TerrainOctaveThresholds[octave] * indices[i].Weight;
                 }
