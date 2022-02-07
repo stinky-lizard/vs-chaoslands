@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>$(ProjectDir)\bin</OutputPath>
     <IntermediateOutputPath>..\..\obj\Release\chaoslands\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -71,9 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="0Harmony.dll" />
     <Content Include="modinfo.json" />
-    <Content Include="protobuf-net.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AI\AiTaskCrabWander.cs" />
@@ -90,10 +88,10 @@
     <Compile Include="src\Block\BlockLocustHorde.cs" />
     <Compile Include="src\Block\BlockSupportBeam.cs" />
     <Compile Include="src\BuffStuff.cs" />
-    <Compile Include="src\Effects\ToxicGasEffect.cs" />
     <Compile Include="src\GasHelper.cs" />
     <Compile Include="src\WorldGen\CaveBiomeSystem.cs" />
     <Compile Include="src\Core.cs" />
+    <Compile Include="src\Effects\ToxicGasEffect.cs" />
     <Compile Include="src\Entity Behavior\EntityBehaviorBossTalk.cs" />
     <Compile Include="src\Entity Behavior\EntityBehaviorBossWaterRemoval.cs" />
     <Compile Include="src\Entity Behavior\EntityBehaviorGear.cs" />
