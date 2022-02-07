@@ -49,6 +49,8 @@ namespace ChaosLands
 
             if (byPlayer == null || !LandsOfChaosConfig.Loaded.CaveInsEnabled || byPlayer.WorldData.CurrentGameMode == EnumGameMode.Creative) return;
             if (world.Rand.NextDouble() > LandsOfChaosConfig.Loaded.CaveInChance) return;
+            if (world.Api.Side != EnumAppSide.Server) return;
+
             if (world.Api.ModLoader.GetModSystem<POIRegistry>()?.GetNearestPoi(pos.ToVec3d(), LandsOfChaosConfig.Loaded.CaveInSupportBeamRadius * 2, (block) => { if (block.Type == "supportbeam" && CheckForSupport(pos, block.Position)) return true; return false; }) != null) return;
 
             BlockPos tmpPos = pos.Copy();

@@ -9,12 +9,14 @@ namespace ChaosLands
         public override void Initialize(ICoreAPI api)
         {
             base.Initialize(api);
+            if (api.Side != EnumAppSide.Server) return;
             api.ModLoader.GetModSystem<POIRegistry>()?.AddPOI(this);
         }
 
         public override void OnBlockRemoved()
         {
             base.OnBlockRemoved();
+            if (Api.Side != EnumAppSide.Server) return;
             Api.ModLoader.GetModSystem<POIRegistry>()?.RemovePOI(this);
         }
 
